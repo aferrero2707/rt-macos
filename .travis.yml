@@ -1,0 +1,15 @@
+language: generic
+os: osx
+osx_image: xcode7.3
+before_script:
+ - curl -LO https://raw.githubusercontent.com/GiovanniBussi/macports-ci/master/macports-ci
+ - source ./macports-ci install
+ - sudo /opt/local/bin/port install gtk3 +quartz
+ - sudo /opt/local/bin/port install gtkmm3 fftw-3-single libiptcdata lensfun lcms2 expat libtiff libjpeg libpng zlib gtk-osx-application-gtk3
+
+
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)$/
+    - /^(?i:unstable)$/

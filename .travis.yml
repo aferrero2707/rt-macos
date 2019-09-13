@@ -5,8 +5,8 @@ osx_image: xcode9.4
 before_script:
  - curl -LO https://raw.githubusercontent.com/GiovanniBussi/macports-ci/master/macports-ci
  - source ./macports-ci install
- - yes | sudo /opt/local/bin/port install glib2
- - yes | sudo /opt/local/bin/port install gtk3 +quartz
+ - yes | sudo /opt/local/bin/port install glib2 +universal
+ - yes | sudo /opt/local/bin/port install gtk3 +quartz +universal
  - yes | sudo /opt/local/bin/port install gtkmm3 fftw-3-single libiptcdata lensfun lcms2 expat libtiff libjpeg libpng zlib gtk-osx-application-gtk3            
 
 

@@ -16,6 +16,7 @@ export PKG_CONFIG_PATH="$wd/inst/lib/pkgconfig:$PKG_CONFIG_PATH"
 # needs: 
 # gtk3 +quartz
 # gtkmm3 fftw-3-single libiptcdata lensfun lcms2 expat libtiff libjpeg libpng zlib gtk-osx-application-gtk3
+sudo /opt/local/bin/port install librsvg || exit 1
 
 
 which cmake
@@ -24,12 +25,12 @@ if [ ! -e RawTherapee ]; then
 git clone https://github.com/Beep6581/RawTherapee.git --branch dev --single-branch --depth=1
 fi
 
-mkdir -p build
+mkdir -p build || exit 1
 cd build
 rm -f CMakeCache.txt
-cmake $cmake_opt -DCMAKE_BUILD_TYPE=${BUILD_TYPE}  ../RawTherapee
+cmake $cmake_opt -DCMAKE_BUILD_TYPE=${BUILD_TYPE}  ../RawTherapee || exit 1
 #make VERBOSE=1
-make -j 3
+make -j 3 || exit 1
 
 cd ..
 

@@ -14,7 +14,9 @@ export PATH="$wd/inst/bin:/Applications/CMake.app/Contents/bin:$PATH"
 export LD_LIBRARY_PATH="$wd/inst/lib:$LD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="$wd/inst/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-sudo /opt/local/bin/port install librsvg || exit 1
+sudo /opt/local/bin/port install librsvg clang-8.0 || exit 1
+ls /opt/local/bin/clang*
+exit 0
 which cmake
 
 if [ ! -e RawTherapee ]; then

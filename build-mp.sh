@@ -4,7 +4,7 @@ wd=$(pwd)
 
 export BUILD_TYPE=Release
 #cmake_opt='-DPROC_TARGET_NUMBER="1" -DPROC_LABEL="generic processor"       -DCACHE_NAME_SUFFIX="5-dev"       -DCMAKE_C_COMPILER="clang"       -DCMAKE_CXX_COMPILER="clang++"       -DWITH_LTO="ON"    -DCMAKE_OSX_SYSROOT="/" -DCMAKE_OSX_DEPLOYMENT_TARGET="10.9"  -DLENSFUNDBDIR="./share/lensfun" -DCMAKE_CXX_FLAGS="-std=c++11"'
-cmake_opt='-DPROC_TARGET_NUMBER="1" -DPROC_LABEL="generic_processor" -DCACHE_NAME_SUFFIX="5-dev" -DCMAKE_C_COMPILER=clang-mp-8.0 -DCMAKE_CXX_COMPILER=clang++-mp-8.0 -DWITH_LTO="ON" -DCMAKE_OSX_DEPLOYMENT_TARGET="10.9"  -DLENSFUNDBDIR=./share/lensfun -DCMAKE_CXX_FLAGS="-std=c++11"'
+cmake_opt='-DPROC_TARGET_NUMBER="1" -DPROC_LABEL="generic_processor" -DCACHE_NAME_SUFFIX="5-dev" -DCMAKE_C_COMPILER=clang-mp-8.0 -DCMAKE_CXX_COMPILER=clang++-mp-8.0 -DWITH_LTO="ON" -DCMAKE_OSX_DEPLOYMENT_TARGET="10.9"  -DLENSFUNDBDIR=./share/lensfun -DCMAKE_CXX_FLAGS="-Wno-deprecated-register -std=c++11"'
 
 export PATH="/opt/local/bin:$PATH"
 export LD_LIBRARY_PATH="/opt/local/lib:$LD_LIBRARY_PATH"
@@ -27,7 +27,7 @@ mkdir -p build || exit 1
 cd build
 rm -f CMakeCache.txt
 cmake $cmake_opt -DCMAKE_BUILD_TYPE=${BUILD_TYPE}  ../RawTherapee || exit 1
-#make VERBOSE=1
-make -j 3 || exit 1
+#make VERBOSE=1 
+make VERBOSE=1 -j 3 || exit 1
 make macosx_bundle || exit 1
 

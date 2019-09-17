@@ -2,12 +2,44 @@ language: generic
 os: osx
 osx_image: xcode7.3
 #osx_image: xcode9.4
+env: 
+  - RT_BRANCH=dev
+
 before_script:
- - wget -c https://github.com/aferrero2707/macports-travis-cache/releases/download/continuous/macports-travis-cache-7.3-2.tgz >& /dev/null
- - (cd / && sudo tar xf "${TRAVIS_BUILD_DIR}/macports-travis-cache-7.3-2.tgz" >& /dev/null)
- - ls /opt/local/bin
- - rm -f macports-travis-cache-7.3-2.tgz
- - bash ./build-mp.sh
+  - git clone https://github.com/Beep6581/RawTherapee.git --branch $RT_BRANCH --single-branch
+  - rm -rf RawTherapee/ci
+  - cp -a ci RawTherapee
+  - cd RawTherapee
+  - TRAVIS_REPO_SLUG="Beep6581/RawTherapee" bash ci/check_commit.sh "nightly" ${RT_BRANCH}
+  - 'if [ -e travis.cancel ]; then
+        exit 0;
+    fi'
+  - cd ..
+  - git clone https://github.com/SpiNNakerManchester/SupportScripts.git support
+  - python support/travis_blocking_stdout.py
+  - wget -c https://github.com/aferrero2707/macports-travis-cache/releases/download/continuous/macports-travis-cache-7.3-2.tgz >& /dev/null
+  - (cd / && sudo tar xf "${TRAVIS_BUILD_DIR}/macports-travis-cache-7.3-2.tgz" >& /dev/null)
+  - ls /opt/local/bin
+  - rm -f macports-travis-cache-7.3-2.tgz
+  - bash ./build-mp.sh
+  - export GIT_DESCRIBE=$(cd ../RawTherapee && git describe)
+  - mv RawTherapee*.zip RawTherapee_temp.zip && mv RawTherapee_temp.zip RawTherapee_mac_${RT_BRANCH}-${GIT_DESCRIBE}-$(date '+%Y%m%d').zip
+
+after_success:
+  - cd $TRAVIS_BUILD_DIR/build
+  - pwd
+  #- ls RawTherapee_${RT_BRANCH}-win64*.zip RawTherapee_${RT_BRANCH}-win64*.exe
+  - ls -lhrt
+  - wget -c https://github.com/aferrero2707/uploadtool/raw/master/remove.sh
+  #- 'if [ x"${RT_BRANCH}" != "xreleases" ]; then
+  #              TRAVIS_REPO_SLUG="Beep6581/RawTherapee" bash ./remove.sh "nightly" "RawTherapee_${RT_BRANCH}-osx" ".zip";
+  #              TRAVIS_REPO_SLUG="Beep6581/RawTherapee" bash ./remove.sh "nightly" "RawTherapee_${RT_BRANCH}-osx" ".exe";
+  #  fi'
+  - wget -c https://github.com/aferrero2707/uploadtool/raw/master/upload_rotate.sh
+  #- TRAVIS_REPO_SLUG="Beep6581/RawTherapee" bash  ./upload_rotate.sh "nightly" RawTherapee*.zip >& /dev/null
+  #- TRAVIS_REPO_SLUG="Beep6581/RawTherapee" bash  ./upload_rotate.sh "nightly" $TRAVIS_BUILD_DIR/RawTherapee/commit-${RT_BRANCH}-osx.hash >& /dev/null
+  - bash  ./upload_rotate.sh "continuous" RawTherapee_mac*.zip >& /dev/null
+  - bash  ./upload_rotate.sh "continuous" $TRAVIS_BUILD_DIR/RawTherapee/commit-${RT_BRANCH}-osx.hash >& /dev/null
 
 branches:
   except:

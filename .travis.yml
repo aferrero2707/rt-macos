@@ -22,12 +22,13 @@ before_script:
   - ls /opt/local/bin
   - rm -f macports-travis-cache-7.3-2.tgz
   - bash ./build-mp.sh
-  - export GIT_DESCRIBE=$(cd ../RawTherapee && git describe)
-  - mv RawTherapee*.zip RawTherapee_temp.zip && mv RawTherapee_temp.zip RawTherapee_mac_${RT_BRANCH}-${GIT_DESCRIBE}-$(date '+%Y%m%d').zip
 
 after_success:
   - cd $TRAVIS_BUILD_DIR/build
   - pwd
+  - ls -lhrt
+  - export GIT_DESCRIBE=$(cd ../RawTherapee && git describe)
+  - mv RawTherapee*.zip RawTherapee_temp.zip && mv RawTherapee_temp.zip RawTherapee_mac_${RT_BRANCH}-${GIT_DESCRIBE}-$(date '+%Y%m%d').zip
   #- ls RawTherapee_${RT_BRANCH}-win64*.zip RawTherapee_${RT_BRANCH}-win64*.exe
   - ls -lhrt
   - wget -c https://github.com/aferrero2707/uploadtool/raw/master/remove.sh

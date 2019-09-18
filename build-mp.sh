@@ -31,6 +31,6 @@ cmake -DPROC_TARGET_NUMBER="1" -DPROC_LABEL="generic_processor" -DCACHE_NAME_SUF
   -DCMAKE_OSX_DEPLOYMENT_TARGET="10.9"  -DLENSFUNDBDIR=./share/lensfun \
   -DCMAKE_CXX_FLAGS="-Wno-deprecated-register -std=c++11" -DCMAKE_BUILD_TYPE=${BUILD_TYPE}  ../RawTherapee || exit 1
 #make VERBOSE=1 
-make VERBOSE=1 -j 3 || exit 1
+make -j 3 install || exit 1
 make macosx_bundle || exit 1
 
